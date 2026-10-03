@@ -1,0 +1,36 @@
+Introduction to RAG
+
+Retrieval-Augmented Generation (RAG) is a technique that combines the strengths of
+information retrieval and large language models (LLMs). Instead of relying solely on
+what the model learned during training, RAG first retrieves relevant pieces of text
+from a knowledge base, then passes that context to the model so it can answer a
+question grounded in your data.
+
+How RAG works
+
+The RAG pipeline has two main phases. During the indexing phase, documents are loaded,
+split into chunks, converted into vector embeddings, and stored in a vector database
+such as ChromaDB. During the query phase, the user's question is embedded, the most
+similar chunks are retrieved, and those chunks are injected into a prompt that an LLM
+uses to produce a final answer.
+
+Why chunking matters
+
+LLMs have a limited context window, and retrieving whole documents is usually too
+noisy. Splitting documents into smaller chunks — typically a few hundred to a few
+thousand tokens, with some overlap between consecutive chunks — improves retrieval
+precision while keeping each piece of context focused.
+
+Embedding dimensions
+
+Modern embedding models like OpenAI's text-embedding-3-small produce 1536-dimensional
+vectors by default, but they support a reduced-dimensionality mode. Requesting 512
+dimensions is a common trade-off: it is still very effective for retrieval while using
+less memory and bandwidth, which matters as your corpus grows.
+
+Evaluation
+
+A good RAG system answers questions accurately while clearly citing its sources.
+Always surface the retrieved chunks to the user so they can verify where each answer
+came from, and prefer models that are instructed to say "I don't know" rather than
+hallucinate when the context is insufficient.
